@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><title>내자녀 만들기</title>
+<script type="module">
+const form = document.getElementById('form')
+const link = document.getElementById('link')
+
+form.addEventListener('submit', e => e.preventDefault())
+
+const updateLink = () => {
+	const data = new FormData(form)
+	const ipdae = data.get('ipdae') || ''
+	const birth = data.get('birth') || ''
+	const name = data.get('name') || ''
+
+	if (ipdae === '' || birth === '' || name === '') {
+		link.search = ''
+		return
+	}
+
+	const val1 = encodeURIComponent(btoa(ipdae.replaceAll('-', '')))
+	const val2 = encodeURIComponent(btoa(birth.replaceAll('-', '').slice(2)))
+	const val3 = encodeURIComponent(name)
+
+	link.search = `?search_val1=${val1}&search_val2=${val2}&search_val3=${val3}`
+}
+
+for (const event of ['change', 'input', 'blur']) {
+	form.addEventListener(event, updateLink)
+}
+updateLink()
+</script>
+<style>
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	font: inherit;
+	background: none;
+	border: none;
+}
+
+html,
+body {
+	width: 100%;
+	min-height: 100vh;
+}
+
+body {
+	--military: 116, 167, 121;
+	--military_dark: 66, 66, 76;
+	--military_light: 203, 195, 158;
+
+	background-color: rgb(var(--military));
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+main {
+	display: block;
+	min-width: 300px;
+	width: 45rem;
+	color: rgb(var(--military_dark));
+}
+
+h1 {
+	padding: 1rem;
+	text-align: center;
+	display: block;
+	font-size: 2rem;
+	font-weight: 700;
+}
+
+form {
+	background-color: rgb(var(--military_light));
+	padding: 1rem 2rem;
+	display: block;
+}
+
+form label > input {
+	font-size: 1.25rem;
+	padding: 1rem;
+	display: block;
+	width: 100%;
+	background-color: transparent;
+	border-bottom: 1px solid rgba(var(--military_dark), 0.3);
+	transition: background-color 0.3s, border-bottom-color 0.3s;
+}
+
+form label > input:focus {
+	background-color: rgba(255, 255, 255, 0.3);
+	border-bottom-color: rgba(var(--military_dark), 0.7);
+}
+
+form label > span {
+	padding: 0 0.5rem;
+	font-size: 1rem;
+	font-weight: 400;
+	transition: color 0.3s;
+}
+
+form label:focus-within > span {
+	color: #000;
+}
+
+form label {
+	display: block;
+	padding: 1rem 0;
+}
+
+#link {
+	display: flex;
+	margin-top: 1rem;
+	text-decoration: none;
+	background-color: rgb(var(--military_dark));
+	display: block;
+	flex-grow: 1;
+	height: 5rem;
+	line-height: 5rem;
+	color: rgb(var(--military));
+	text-align: center;
+	font-weight: 700;
+	font-size: 2rem;
+
+	transition: background-color 0.3s, transform 0.3s, opacity 0.3s;
+}
+
+#link:hover {
+	transform: scale(0.97);
+	background-color: #333;
+}
+
+form:invalid + #link {
+	pointer-events: none;
+	user-select: none;
+	opacity: 0.5;
+}
+
+ul {
+	list-style-type: '※ ';
+	padding-left: 1rem;
+	color: rgb(var(--military_dark));
+	padding-top: 0.4rem;
+}
+
+li {
+	padding-top: 0.3rem;
+	word-break: keep-all;
+}
+</style>
+
+<body>
+<main>
+<h1>내자녀 만들기</h1>
+<form id="form">
+<label><span>입소일</span><input required name="ipdae" type="date" lang="ko"></label>
+<label><span>생년월일</span><input required name="birth" type="date"></label>
+<label><span>이름</span><input required name="name" type="input" placeholder="김준욱"></label>
+</form>
+<a id="link" href="http://www.katc.mil.kr/katc/community/children.jsp" target="_blank">편지 쓰기 링크</a>
+<ul>
+<li>편지 쓰기 링크를 우클릭(스마트폰에선 길게 누르기)하여 링크를 복사하실 수 있습니다.</li>
+<li>링크를 들어가면 방문자가 입소일, 생년월일, 이름, 이름표가 붙여진 단체사진을 확인할 수 있게 되므로 링크를 공유하기 전 신중히 생각해주시기 바랍니다.</li>
+</ul>
+</main>
+</html>
